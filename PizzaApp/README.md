@@ -3,176 +3,181 @@
 
 # **PizzaApp**
 
-PizzaApp is a .NET MAUI application designed to demonstrate a pizza menu system using **MVVM architecture**, **API integration**, and **SQLite database storage**. It allows users to view pizza details, fetch data from an API, and store the data locally for offline use.
+PizzaApp is a .NET MAUI application demonstrating a pizza menu system using **MVVM architecture**, **API integration**, and **SQLite database storage**. It allows users to view pizza details, fetch data from an API, store the data locally for offline use, and navigate to a static "Contact Us" page.
 
 ---
 
 ## **Features**
-- **Modern UI** with .NET MAUI.
-- Implements **MVVM architecture** for separation of concerns.
+
+- **Modern UI** built with .NET MAUI.
+- Implements **MVVM architecture** for a clean separation of concerns.
 - Fetches pizza data from a **mock API**.
-- Stores and retrieves pizza data using **SQLite** for offline access.
-- Dynamically updates the UI with data bindings.
+- Stores pizza data in **SQLite** for offline access.
+- Includes navigation between pages using **Shell Routing**.
+- A **static "Contact Us" page** showcasing Shell navigation and UI design.
 
 ---
 
 ## **Architecture**
-The project follows the **MVVM (Model-View-ViewModel)** pattern:
+
+The project adheres to the **MVVM (Model-View-ViewModel)** architecture:
+
 1. **Model**:
-   - Represents the pizza data (e.g., name, description, price, image).
+   - Represents the pizza data structure (e.g., name, description, price, and image).
 2. **View**:
-   - Contains the UI elements (XAML files) to display the data.
+   - XAML pages for the UI, including data binding to ViewModels.
 3. **ViewModel**:
-   - Contains the logic and data binding to connect the Model and the View.
+   - Contains logic to fetch, store, and manipulate data, as well as commands for user interactions.
 
 ---
 
 ## **Screens**
-1. **Home Page**:
-   - A list of pizzas loaded dynamically.
-   - Button to fetch data using the API.
-   - Displays pizza details including images, descriptions, and prices.
 
-   **Key Components**:
-   - **MVVM Binding**: The list of pizzas is bound to the `Pizzas` property in the `HomeViewModel`.
-   - **API Integration**: Data is fetched from the `ApiService`.
-   - **SQLite Integration**: Data is stored locally for offline use.
+### **1. Home Page**
+- Displays a list of pizzas dynamically loaded using API and SQLite.
+- Features a button to load data from the API.
+- Includes a link to navigate to the **Contact Us** page.
 
-2. **Details Page**:
-   - Displays detailed information about a selected pizza.
-   - Uses shell routing to navigate to this page.
+### **2. Pizza Details Page**
+- Displays detailed information about a selected pizza.
+- Implements navigation from the Home Page using Shell Routing.
+
+### **3. Contact Us Page**
+- A static page with dummy contact information.
+- Linked from the Home Page for easy navigation.
 
 ---
 
 ## **Core Functionalities**
+
 ### **1. MVVM Implementation**
 - **HomePage.xaml**:
-   - Binds to `HomeViewModel`.
-   - Uses data bindings to display pizzas dynamically in a `CollectionView`.
-
+  - Binds to `HomeViewModel`.
+  - Uses `CollectionView` to dynamically display pizza data.
 - **HomeViewModel.cs**:
-   - Fetches data from the API or SQLite and updates the `Pizzas` observable collection.
-   - Implements commands for data loading and navigation.
-
-   Example:
-   ```csharp
-   public ObservableCollection<Pizza> Pizzas { get; set; } = new();
-   ```
-
-- **Pizza.cs (Model)**:
-   - Represents the structure of pizza data.
+  - Fetches pizza data from the API or SQLite and updates the UI.
+  - Implements commands for loading data and navigation.
 
 ### **2. Navigation Between Pages**
-- **AppShell.xaml**:
-   - Configures shell-based navigation.
-   - Example:
-     ```xml
-     <ShellContent Title="Home" ContentTemplate="{DataTemplate pages:HomePage}" Route="HomePage" />
-     <ShellContent Title="Details" ContentTemplate="{DataTemplate pages:PizzaDetailsPage}" Route="PizzaDetailsPage" />
-     ```
-
+- **Shell Routing**:
+  - Defined in `AppShell.xaml` for smooth navigation between pages.
+  - Example:
+    ```xml
+    <ShellContent Title="Contact Us" ContentTemplate="{DataTemplate pages:ContactUsPage}" Route="ContactUsPage" />
+    ```
 - **Navigation Command**:
-   - Example:
-     ```csharp
-     await Shell.Current.GoToAsync("PizzaDetailsPage", parameters);
-     ```
+  - Example from `HomeViewModel`:
+    ```csharp
+    [RelayCommand]
+    public async Task NavigateToContactUs()
+    {
+        await Shell.Current.GoToAsync("ContactUsPage");
+    }
+    ```
 
 ### **3. API Consumption**
 - **ApiService.cs**:
-   - Simulates a RESTful API call to fetch pizza data.
-   - Example:
-     ```csharp
-     public async Task<List<Pizza>> FetchPizzasAsync()
-     {
-         await Task.Delay(1000);
-         return new List<Pizza>
-         {
-             new Pizza { Name = "Margherita", Description = "Cheese pizza", Price = 8.99 },
-             // More pizzas...
-         };
-     }
-     ```
-
-- **Key Feature**:
-   - Fetches data from the mock API and stores it locally.
+  - Simulates fetching pizza data from a RESTful API.
+  - Example:
+    ```csharp
+    public async Task<List<Pizza>> FetchPizzasAsync()
+    {
+        await Task.Delay(1000);
+        return new List<Pizza>
+        {
+            new Pizza { Name = "Margherita", Description = "Cheese pizza", Price = 8.99 },
+            // More pizzas...
+        };
+    }
+    ```
 
 ### **4. SQLite Database Integration**
 - **DatabaseService.cs**:
-   - Handles SQLite operations (CRUD).
-   - Example:
-     ```csharp
-     public Task<int> SavePizzaAsync(Pizza pizza)
-     {
-         return _database.InsertOrReplaceAsync(pizza);
-     }
-     ```
+  - Handles CRUD operations for storing pizza data.
+  - Example:
+    ```csharp
+    public Task<int> SavePizzaAsync(Pizza pizza)
+    {
+        return _database.InsertOrReplaceAsync(pizza);
+    }
+    ```
 
 - **Offline Functionality**:
-   - If the API is unavailable, data is loaded from SQLite.
+  - Loads pizza data from SQLite when the API is unavailable.
 
----
-
-## **Usage Instructions**
-
-### **1. Prerequisites**
-- Install **Visual Studio 2022** with the .NET MAUI workload.
-- Ensure the following NuGet packages are installed:
-  - `sqlite-net-pcl`
-  - `CommunityToolkit.Mvvm`
-
-### **2. Running the App**
-1. Clone the repository.
-2. Open the solution file (`PizzaApp.sln`) in Visual Studio.
-3. Build the solution (`Build > Rebuild Solution`).
-4. Run the app (`Debug > Start Debugging`).
-
----
-
-## **Folder Structure**
-- **Models**:
-  - Contains the `Pizza.cs` class representing pizza data.
-- **ViewModels**:
-  - Contains `HomeViewModel.cs` and `PizzaDetailsViewModel.cs` for data binding and logic.
-- **Views (Pages)**:
-  - Contains `HomePage.xaml` and `PizzaDetailsPage.xaml` for the UI.
-- **Services**:
-  - `ApiService.cs`: Fetches data from the mock API.
-  - `DatabaseService.cs`: Manages SQLite operations.
-
----
-
-## **Screenshots**
-
-1. **Home Page**:
-   ![Home Page](https://via.placeholder.com/300x600?text=Home+Page+with+Pizzas)
-2. **Details Page**:
-   ![Details Page](https://via.placeholder.com/300x600?text=Details+Page+with+Pizza+Details)
+### **5. Contact Us Page**
+- **ContactUsPage.xaml**:
+  - A static page with dummy contact information.
+  - Example content:
+    ```xml
+    <Label Text="Email: contact@pizzaapp.com" FontSize="16" />
+    <Label Text="Phone: +1 123-456-7890" FontSize="16" />
+    ```
 
 ---
 
 ## **How the Requirements Are Fulfilled**
 
-### **Implementation of MVVM**
-- The project strictly follows the MVVM architecture.
-- **Models** represent pizza data.
-- **ViewModels** handle logic and data binding.
-- **Views** display data using XAML bindings.
+### **1. Implementation of MVVM**
+- **Models**: Represents pizza data.
+- **ViewModels**: Handles logic, such as fetching data and managing navigation.
+- **Views**: UI pages bound to ViewModels for dynamic updates.
 
-### **Navigation Between Pages**
-- Uses Shell navigation (`AppShell.xaml`).
-- Passes data between pages using shell routing and query properties.
+### **2. Navigation Between Pages**
+- Uses Shell Routing for seamless navigation:
+  - Home Page -> Pizza Details Page.
+  - Home Page -> Contact Us Page.
 
-### **API Consumption**
-- The `ApiService` simulates fetching data from an API.
-- Dynamically updates the UI based on the fetched data.
+### **3. API Consumption**
+- Fetches pizza data using a simulated RESTful API (`ApiService`).
+- Dynamically updates the UI based on API responses.
 
-### **SQLite Database**
-- Data is saved to SQLite for offline use.
-- Fetches data from SQLite if the API is unavailable.
+### **4. SQLite Database Integration**
+- Stores pizza data locally using SQLite for offline functionality.
+- Data persists between app sessions.
+
+---
+
+## **Setup and Installation**
+
+### **Prerequisites**
+- **Visual Studio 2022** with .NET MAUI workload installed.
+- NuGet Packages:
+  - `sqlite-net-pcl`
+  - `CommunityToolkit.Mvvm`
+
+### **Steps to Run the App**
+1. Clone the repository.
+2. Open the solution in Visual Studio (`PizzaApp.sln`).
+3. Restore NuGet packages (`Tools > NuGet Package Manager > Manage NuGet Packages for Solution`).
+4. Build the solution (`Build > Rebuild Solution`).
+5. Run the app on an emulator, simulator, or local machine.
+
+---
+
+## **Folder Structure**
+
+- **Models**:
+  - `Pizza.cs`: Represents pizza data (e.g., name, description, price, image).
+- **ViewModels**:
+  - `HomeViewModel.cs`: Handles logic for the Home Page.
+  - `PizzaDetailsViewModel.cs`: Handles logic for the Pizza Details Page.
+- **Pages (Views)**:
+  - `HomePage.xaml`: Displays the list of pizzas and navigation links.
+  - `PizzaDetailsPage.xaml`: Shows detailed pizza information.
+  - `ContactUsPage.xaml`: Static page with contact information.
+- **Services**:
+  - `ApiService.cs`: Fetches pizza data from a mock API.
+  - `DatabaseService.cs`: Handles SQLite operations.
 
 ---
 
 ## **Future Enhancements**
+
 - Integrate a real API for fetching pizza data.
-- Add advanced UI features like animations and filtering.
-- Implement error messages and loading spinners for better UX.
+- Add advanced UI features like filtering and sorting.
+- Enhance offline capabilities with more robust error handling.
+
+---
+
+Let me know if you need further modifications!

@@ -4,4 +4,6 @@
        x:Class="PizzaApp.AppShell">
 
     <ShellContent Title="Home" ContentTemplate="{DataTemplate pages:HomePage}" Route="HomePage" />
+    <ShellContent Title="Details" ContentTemplate="{DataTemplate pages:PizzaDetailsPage}" Route="PizzaDetailsPage" />
+    <ShellContent Title="Contact Us" ContentTemplate="{DataTemplate pages:ContactUsPage}" Route="ContactUsPage" />
 </Shell>

@@ -10,6 +10,16 @@
         <!-- Button to Load Pizzas -->
         <Button Text="Load Pizzas" Command="{Binding LoadPizzasCommand}" />
 
+        <Label Text="Contact Us"
+           TextColor="Blue"
+           FontSize="18"
+           TextDecorations="Underline"
+           HorizontalOptions="Center">
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding NavigateToContactUsCommand}" />
+            </Label.GestureRecognizers>
+        </Label>
+
         <!-- Status Label -->
         <Label Text="Loading pizzas..." 
                IsVisible="{Binding IsLoading}" 

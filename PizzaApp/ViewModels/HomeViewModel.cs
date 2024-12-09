@@ -67,4 +67,20 @@ public partial class HomeViewModel : ObservableObject
             IsLoading = false; // Stop loading
         }
     }
+
+    [RelayCommand]
+    public async Task NavigateToContactUs()
+    {
+        try
+        {
+            await Shell.Current.GoToAsync("ContactUsPage");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Navigation error: {ex.Message}");
+            Console.WriteLine($"Stack trace: {ex.StackTrace}");
+        }
+    }
+
+
 }
