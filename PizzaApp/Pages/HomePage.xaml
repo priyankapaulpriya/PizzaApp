@@ -1,0 +1,39 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PizzaApp.ViewModels"
+             xmlns:model="clr-namespace:PizzaApp.Models"
+             x:Class="PizzaApp.Pages.HomePage"
+             x:DataType="vm:HomeViewModel"
+             Title="Pizza Menu">
+
+    <VerticalStackLayout Padding="10" Spacing="10">
+        <!-- Button to Load Pizzas -->
+        <Button Text="Load Pizzas" Command="{Binding LoadPizzasCommand}" />
+
+        <!-- Status Label -->
+        <Label Text="Loading pizzas..." 
+               IsVisible="{Binding IsLoading}" 
+               HorizontalOptions="Center" 
+               FontAttributes="Italic" />
+
+        <!-- CollectionView for Pizzas -->
+        <CollectionView ItemsSource="{Binding Pizzas}" SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:Pizza">
+                    <Frame Padding="10" Margin="5" BorderColor="Gray">
+                        <VerticalStackLayout Spacing="5">
+                            <!-- Pizza Image -->
+                            <Image Source="{Binding Image}" HeightRequest="100" WidthRequest="100" Aspect="AspectFill" />
+                            <!-- Pizza Name -->
+                            <Label Text="{Binding Name}" FontSize="20" />
+                            <!-- Pizza Description -->
+                            <Label Text="{Binding Description}" FontSize="14" />
+                            <!-- Pizza Price -->
+                            <Label Text="{Binding Price, StringFormat='Price: {0:C}'}" FontSize="14" />
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+</ContentPage>
