@@ -138,14 +138,6 @@ The project follows the **MVVM (Model-View-ViewModel)** pattern:
   - `ApiService.cs`: Fetches data from the mock API.
   - `DatabaseService.cs`: Manages SQLite operations.
 
----
-
-## **Screenshots**
-
-1. **Home Page**:
-   ![Home Page](https://via.placeholder.com/300x600?text=Home+Page+with+Pizzas)
-2. **Details Page**:
-   ![Details Page](https://via.placeholder.com/300x600?text=Details+Page+with+Pizza+Details)
 
 ---
 
