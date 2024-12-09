@@ -1,8 +1,8 @@
 
 ---
 
-Group :-
-Rakesh Ohja - A00260719
+Name - Priyanka Paul
+Student ID - A00287707
 
 # **PizzaApp**
 
